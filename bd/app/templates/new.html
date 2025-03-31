@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Health Data</title>
+
+</head>
+
+<body>
+
+    <!-- Display messages -->
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    {% if success %}
+    <p style="color: green;">{{ success }}</p>
+    {% endif %}
+
+    <!-- Create a new patient form -->
+    <form action="/" method="POST">
+        <h1>Health Data</h1>
+        <label for="n">Name:</label><br>
+        <input type="text" name="n" required /><br><br>
+
+        <label for="sn">Surname:</label><br>
+        <input type="text" name="sn" required /><br><br>
+
+        <label for="age">Age:</label><br>
+        <input type="number" name="age" required /><br><br>
+
+        <label for="ill">Illness:</label><br>
+        <input type="text" name="ill" required /><br><br>
+
+        <label for="para">Parameter:</label><br>
+        <input type="text" name="para" required /><br><br>
+
+        <label for="value">Parameter Value:</label><br>
+        <input type="number" name="value" step="any" required /><br><br>
+
+        <button type="submit" name="action" value="Create">Submit</button>
+    </form>
+
+    <hr>
+
+    <h2>Existing Patients</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Age</th>
+            <th>Illness</th>
+            <th>Parameter</th>
+            <th>Parameter Value</th>
+            <th>Actions</th>
+        </tr>
+        {% for patient in patients %}
+        <tr>
+            <td>{{ patient['id'] }}</td>
+            <td>{{ patient['name'] }}</td>
+            <td>{{ patient['surname'] }}</td>
+            <td>{{ patient['age'] }}</td>
+            <td>{{ patient['illness'] }}</td>
+            <td>{{ patient['parameter'] }}</td>
+            <td>{{ patient['parameter_val'] }}</td>
+            <td>
+                <!-- Update form -->
+                <form action="/update/{{ patient['id'] }}" method="POST" style="display:inline;">
+                    <input type="text" name="name" value="{{ patient['name'] }}" required />
+                    <input type="text" name="surname" value="{{ patient['surname'] }}" required />
+                    <input type="number" name="age" value="{{ patient['age'] }}" required />
+                    <input type="text" name="illness" value="{{ patient['illness'] }}" required />
+                    <input type="text" name="parameter" value="{{ patient['parameter'] }}" required />
+                    <input type="number" name="parameter_val" value="{{ patient['parameter_val'] }}" step="any"
+                        required />
+                    <button type="submit">Update</button>
+                </form>
+                <!-- Delete form -->
+                <form action="/delete/{{ patient['id'] }}" method="POST" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+
+</html>

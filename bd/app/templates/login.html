@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Log in Page</title>
+    <style>
+        /* Styling for modal content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Login Modal -->
+    <div id="loginModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm" action="/login" method="POST">
+                <label for="username">Username:</label><br>
+                <input type="text" name="username" required /><br><br>
+                <label for="password">Password:</label><br>
+                <input type="password" name="password" required /><br><br>
+                <button type="submit">Login</button>
+            </form>
+            <br>
+            <button onclick="showRegisterForm()">Don't have an account? Register here</button>
+        </div>
+    </div>
+
+    <!-- Registration Form Modal -->
+    <div id="registerModal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Register</h2>
+            <form id="registerFormSubmit" action="/register" method="POST">
+                <label for="username">Username:</label><br>
+                <input type="text" name="username" required /><br><br>
+                <label for="password">Password:</label><br>
+                <input type="password" name="password" required /><br><br>
+                <button type="submit">Register</button>
+            </form>
+            <br>
+            <button onclick="showLoginForm()">Already have an account? Login here</button>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function () {
+            var token = localStorage.getItem('auth_token');
+            if (!token) {
+                document.getElementById('loginModal').style.display = 'block';  // Show the login modal
+            } else {
+                window.location.href = '/';
+            }
+        };
+
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            this.submit();  // Let the form handle the submission directly to the backend
+        });
+
+        document.getElementById('registerFormSubmit').addEventListener('submit', function (e) {
+            e.preventDefault();
+            this.submit();  // Let the form handle the submission directly to the backend
+        });
+
+
+        function closeModal() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('registerModal').style.display = 'none';
+        }
+
+        function showRegisterForm() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('registerModal').style.display = 'block';
+        }
+
+        function showLoginForm() {
+            document.getElementById('registerModal').style.display = 'none';
+            document.getElementById('loginModal').style.display = 'block';
+        }
+    </script>
+
+</body>
+
+</html>
